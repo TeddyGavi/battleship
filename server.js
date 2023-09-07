@@ -14,3 +14,7 @@ const env = process.env.NODE_ENV
 app.use(express.static(path.join(__dirname, "public")))
 
 server.listen(PORT, () => console.log(`Server listening on port ${PORT} and env is ${env}`))
+
+io.on('connection', socket => {
+  console.log('new ws connection')
+})
