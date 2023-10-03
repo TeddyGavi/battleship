@@ -1,5 +1,6 @@
 let computerBoard,
   playerBoard = [];
+const gameGrid = document.getElementsByClassName("game__grid");
 const width = 10;
 
 const carrier = {
@@ -23,16 +24,28 @@ const destroyer = {
   orientation: horizontal,
 };
 // from hmtl script
-gameMode === "multiplayer" ? multiplayerMode() : singleplayerMode();
+gameMode === "multiPlayer" ? multiplayerMode() : singleplayerMode();
 
 function createGrid() {
   return Array.from({ length: width }, () => Array(width).fill(0));
 }
+
+function fillGridDiv() {
+  for (let i = 0; i < 100; i++) {
+    const gridItem = document.createElement("div");
+    gridItem.classList.add("grid__item");
+    gridItem.textContent = i + 1;
+  }
+
+  gameGrid.appendChile(gridItem);
+}
+
 function placeShipsRandomly() {}
 function singleplayerMode() {
   console.log("single player");
   computerBoard = createGrid();
   playerBoard = createGrid();
+  fillGridDiv();
 }
 
 function multiplayerMode() {
