@@ -1,27 +1,27 @@
 let computerBoard,
   playerBoard = [];
-const gameGrid = document.getElementsByClassName("game__grid");
+const gameGrid = document.getElementById("game__grid");
 const width = 10;
 
 const carrier = {
   length: 5,
-  orientation: horizontal,
+  orientation: "horizontal",
 };
 const battleship = {
   length: 4,
-  orientation: horizontal,
+  orientation: "horizontal",
 };
 const crusier = {
   length: 3,
-  orientation: horizontal,
+  orientation: "horizontal",
 };
 const submarine = {
   length: 3,
-  orientation: horizontal,
+  orientation: "horizontal",
 };
 const destroyer = {
   length: 2,
-  orientation: horizontal,
+  orientation: "horizontal",
 };
 // from hmtl script
 gameMode === "multiPlayer" ? multiplayerMode() : singleplayerMode();
@@ -31,13 +31,14 @@ function createGrid() {
 }
 
 function fillGridDiv() {
+  console.log(gameGrid);
+  if (!gameGrid) return;
   for (let i = 0; i < 100; i++) {
     const gridItem = document.createElement("div");
     gridItem.classList.add("grid__item");
     gridItem.textContent = i + 1;
+    gameGrid.appendChild(gridItem);
   }
-
-  gameGrid.appendChile(gridItem);
 }
 
 function placeShipsRandomly() {}
