@@ -65,49 +65,24 @@ function createShips() {
   }
 }
 
-// function placeShipsRandomly() {
-//   playerBoard = createGrid();
-//   console.table(playerBoard);
-//   for (let i = 0; i < ships.length; i++) {
-//     let currentShipLength = ships[i].size;
-//     let shipOrientation = ships[i].orientation;
-//     for (let j = 0; j < playerBoard.length; j++) {
-//       const randomRowStart = randomNumberBetween(0, playerBoard[j].length - 1);
-//       const randomRow = playerBoard[randomRowStart];
-//       for (let ii = 0; ii < currentShipLength; ii++) {
-//         if (currentShipLength < randomRow.length - randomRowStart) {
-//           randomRow[ii] = 1;
-//         }
-//       }
-//     }
-//   }
-//   console.table(playerBoard);
-// }
-
-function placeShip(playerBoard, currentShipLength, shipOrientation) {
+function placeShip(playerBoard, currentShip) {
+  console.log(currentShip);
   let shipPlaced = false;
   while (!shipPlaced) {
     const randomRowStart = randomNumberBetween(0, playerBoard.length - 1);
     const randomColStart = randomNumberBetween(0, playerBoard[0].length - 1);
 
     if (
-      canPlaceShip(
-        playerBoard,
-        randomRowStart,
-        randomColStart,
-        currentShipLength,
-        shipOrientation
-      )
+      canPlaceShip(playerBoard, randomRowStart, randomColStart, currentShip)
     ) {
-      // If the ship can be placed at the chosen position, place it
-      for (let ii = 0; ii < currentShipLength; ii++) {
-        if (shipOrientation === "horizontal") {
+      for (let ii = 0; ii < currentShip.size; ii++) {
+        if (currentShip.orientation === "horizontal") {
           playerBoard[randomRowStart][randomColStart + ii] = 1;
         } else {
           playerBoard[randomRowStart + ii][randomColStart] = 1;
         }
       }
-      shipPlaced = true; // Set the flag to true to exit the loop
+      shipPlaced = true;
     }
   }
   return false;
@@ -115,34 +90,33 @@ function placeShip(playerBoard, currentShipLength, shipOrientation) {
 
 function placeShipsRandomly() {
   let playerBoard = createGrid();
-  console.table(playerBoard);
-  for (let i = 0; i < ships.length; i++) {
-    let currentShipLength = ships[i].size;
-    let shipOrientation = ships[i].orientation;
 
-    if (!placeShip(playerBoard, currentShipLength, shipOrientation)) {
+  for (let i = 0; i < ships.length; i++) {
+    let currentShip = ships[i];
+    if (!placeShip(playerBoard, currentShip)) {
       //try other direction
-      placeShip(playerBoard, currentShipLength, "vertical");
+      (currentShip.orientation = "vertical"),
+        placeShip(playerBoard, currentShip);
     }
   }
-  console.table(playerBoard);
 }
 
-function canPlaceShip(board, row, col, length, orientation) {
+function canPlaceShip(board, row, col, currentShip) {
+  const { size, orientation } = currentShip;
   if (orientation === "horizontal") {
-    if (col + length > board[0].length) {
+    if (col + size > board[0].length) {
       return false;
     }
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < size; i++) {
       if (board[row][col + i] !== 0) {
         return false; // There's a ship or part of a ship already there
       }
     }
   } else {
-    if (row + length > board.length) {
+    if (row + size > board.length) {
       return false; // The ship goes beyond the board's boundary
     }
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < size; i++) {
       if (board[row + i][col] !== 0) {
         return false; // There's a ship or part of a ship already there
       }
@@ -152,8 +126,6 @@ function canPlaceShip(board, row, col, length, orientation) {
 }
 
 function singleplayerMode() {
-  computerBoard = createGrid();
-  playerBoard = createGrid();
   fillGridDiv();
   createShips();
   placeShipsRandomly();
